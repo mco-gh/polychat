@@ -34,7 +34,8 @@
       },
       target: {
         type: String,
-        value: 'en',
+        value: (navigator.browserLanguage || navigator.language ||
+          navigator.userLanguage).substr(0,2) || 'en',
         notify: true
       }
     },
