@@ -10,8 +10,8 @@
     <input type='text' id='messageInput' placeholder='Message'>
     <script>
 
-    	var polychat = new Polychat();
-    	polychat.name = prompt('Enter your name');
+      var polychat = new Polychat();
+      polychat.name = prompt('Enter your name');
       polychat.onMessage = function(name, text) {
         $('<div/>').text(text).prepend($('<em/>').text(name + ': ')).appendTo($('#messagesDiv'));
         $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
@@ -23,7 +23,7 @@
           polychat.send($('#messageInput').val());
           $('#messageInput').val('');
         } else {
-        	polychat.typing();
+          polychat.typing();
         }
       });
 
