@@ -12,42 +12,42 @@ var Polychat = function() {
 		self.fb.on('child_added', function(snapshot) {
 			var message = snapshot.val();
 			switch (message.type) {
-                case 'join':
-                    // User joined.
-                    self.onJoin(message.name);
-                    break;
-                case 'message':
-                    // Got a chat message.
-                    self.onMessage(message.name, message.text);
-                    break;
+        case 'join':
+          // User joined.
+          self.onJoin(message.name);
+          break;
+        case 'message':
+          // Got a chat message.
+          self.onMessage(message.name, message.text);
+          break;
 				case 'typing':
-  					if (!self.users[message.name]) {
-						// Got a typing event when user isn't typing,
-						// run the typing handler.
+					if (!self.users[message.name]) {
+  					// Got a typing event when user isn't typing,
+  					// run the typing handler.
   						self.onTyping(message.name);
-  					} else {
-						// Got a typing event when user is already typing,
-						// cancel the scheduled handler for typing stopping.
-  						clearTimeout(self.users[message.name]);
-  					}
-  					// Schedule the handler for typing stopping.
-						self.users[message.name] = setTimeout(function() {
-							delete self.users[message.name];
-							self.onTypingStop(message.name);
-						}, self.typingTimeout);
+					} else {
+  					// Got a typing event when user is already typing,
+  					// cancel the scheduled handler for typing stopping.
+						clearTimeout(self.users[message.name]);
+					}
+					// Schedule the handler for typing stopping.
+					self.users[message.name] = setTimeout(function() {
+						delete self.users[message.name];
+						self.onTypingStop(message.name);
+					}, self.typingTimeout);
 					break;
 			};
 		});
         self.fb.push({type: 'join', name: self.name});
 	};
 
-    self.onMessage = function(name, text) {
-        console.log(name + ': ' + text);
-    };
+  self.onMessage = function(name, text) {
+      console.log(name + ': ' + text);
+  };
 
-    self.onJoin = function(name) {
-        self.onMessage(name, ' joined');
-    };
+  self.onJoin = function(name) {
+      self.onMessage(name, ' joined');
+  };
 
 	self.onTyping = function(name) {
 		self.onMessage(name, 'is typing');
