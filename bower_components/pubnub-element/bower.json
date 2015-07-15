@@ -1,9 +1,10 @@
 {
     "name": "pubnub-element",
-    "version": "3.6.7",
+    "version": "4.0.1",
     "authors": [
     	"PubNub",
-        "Larry Wu <lw7360@gmail.com>"
+        "Larry Wu <lw7360@gmail.com>",
+        "Kevin Gleason <kaagleason@gmail.com>"
     ],
     "description": "A Custom element to connect PubNub data stream.",
     "keywords": [
