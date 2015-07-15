@@ -1,3 +1,4 @@
+bower install
 gsutil -m cp -r * gs://www.polychat.io
-gsutil web set -m index.html gs://www.polychat.io
 gsutil -m acl set -r public-read gs://www.polychat.io
+gsutil web set -m index.html gs://www.polychat.io
