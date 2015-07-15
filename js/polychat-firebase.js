@@ -6,10 +6,11 @@ var Polychat = function() {
 	self.users = {};
 	self.typingTimeout = 3000;
 	self.lastKeyPress = new Date();
+  self.initialLimit = 5;
 
 	self.connect = function(name) {
 		self.fb = new Firebase('https://dpe-polychat.firebaseio.com/');
-		self.fb.on('child_added', function(snapshot) {
+		self.fb.limit(self.initialLimit).on('child_added', function(snapshot) {
 			var message = snapshot.val();
 			switch (message.type) {
         case 'join':
@@ -24,7 +25,7 @@ var Polychat = function() {
 					if (!self.users[message.name]) {
   					// Got a typing event when user isn't typing,
   					// run the typing handler.
-  						self.onTyping(message.name);
+  					self.onTyping(message.name);
 					} else {
   					// Got a typing event when user is already typing,
   					// cancel the scheduled handler for typing stopping.
@@ -38,15 +39,15 @@ var Polychat = function() {
 					break;
 			};
 		});
-        self.fb.push({type: 'join', name: self.name});
+    self.fb.push({type: 'join', name: self.name});
 	};
 
   self.onMessage = function(name, text) {
-      console.log(name + ': ' + text);
+    console.log(name + ': ' + text);
   };
 
   self.onJoin = function(name) {
-      self.onMessage(name, ' joined');
+    self.onMessage(name, ' joined');
   };
 
 	self.onTyping = function(name) {
@@ -65,7 +66,6 @@ var Polychat = function() {
 
 	self.typing = function() {
 		var now = new Date();
-		console.log((now - self.lastKeyPress));
 		if (self.fb != null && (now - self.lastKeyPress) > 1000 ) {
 			self.lastKeyPress = now;
 			self.fb.push({type: 'typing', name: self.name});
