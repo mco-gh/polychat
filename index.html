@@ -25,6 +25,7 @@
     <link rel="import" href="bower_components/iron-icons/iron-icons.html">
 
     <link rel="import" href="x-chat-list.html">
+    <link rel="import" href="x-translate.html">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <!-- <body unresolved fullbleed> -->
@@ -56,6 +57,7 @@
             <div tool class="layout horizontal flex">
                 <div class="flexKitteh">Kitteh Anonymous</div>
                 <iron-icon icon="account-circle"></iron-icon><span>{{occupancy}}</span>
+                <x-translate target="en" query="ねこ"></x-translate>
             </div>
             <section class="layout vertical fit" id="chat">
                 <div class="chat-list flex">
