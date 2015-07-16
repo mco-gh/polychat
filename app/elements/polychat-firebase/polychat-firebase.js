@@ -36,7 +36,7 @@ var Polychat = function() {
 
     users.on('child_removed', function(snapshot) {
       var name = snapshot.key();
-      delete self.users[name]
+      delete self.users[name];
       self.onLeave(name);
       self.onUsers(self.users);
     });
@@ -78,7 +78,7 @@ var Polychat = function() {
   };
 
   self.send = function(text) {
-    if (self.messages != null) {
+    if (self.messages !== null) {
       self.messages.push({
         type: 'message',
         name: self.name,
@@ -93,12 +93,12 @@ var Polychat = function() {
       self.typingInterval = null;
       self.user.set(false);
     };
-    if (self.user != null) {
-      if (self.typingInterval != null) {
+    if (self.user !== null) {
+      if (self.typingInterval !== null) {
         clearTimeout(self.typingInterval);
       }
       if (typing) {
-        if (self.typingInterval == null) {
+        if (self.typingInterval === null) {
           self.user.set(true);
         }
         self.typingInterval = setTimeout(clear, 3000);
