@@ -23,7 +23,13 @@ var Polychat = function() {
     users.on('child_added', function(snapshot) {
       var name = snapshot.key();
       self.users[name] = false;
-      self.onJoin(name);
+      if (name == self.name) {
+        setTimeout(function() {
+          self.onJoin(name);
+        }, 2000);
+      } else {
+        self.onJoin(name);
+      }
       self.onUsers(self.users);
     });
 
@@ -43,7 +49,7 @@ var Polychat = function() {
     });
 
     self.messages = fb.child('messages');
-    self.messages.limitToLast(4).on('child_added', function(snapshot) {
+    self.messages.limitToLast(5).on('child_added', function(snapshot) {
       var message = snapshot.val();
       self.onMessage(message.name, message.text);
     });
