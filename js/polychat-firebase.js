@@ -1,75 +1,56 @@
 var Polychat = function() {
 
-	var self = this;
-	self.fb = null;
-	self.name = 'Anonymous';
-	self.users = {};
-	self.typingTimeout = 3000;
-	self.lastKeyPress = new Date();
-  self.initialLimit = 5;
+  var self = this;
+  self.name = 'Anonymous';
+  self.user = null;
+  self.messages = null;
+  self.typingInterval = null;
 
-	self.connect = function(name) {
-		self.fb = new Firebase('https://dpe-polychat.firebaseio.com/');
-		self.fb.limit(self.initialLimit).on('child_added', function(snapshot) {
-			var message = snapshot.val();
-			switch (message.type) {
-        case 'join':
-          // User joined.
-          self.onJoin(message.name);
-          break;
-        case 'message':
-          // Got a chat message.
-          self.onMessage(message.name, message.text);
-          break;
-				case 'typing':
-					if (!self.users[message.name]) {
-  					// Got a typing event when user isn't typing,
-  					// run the typing handler.
-  					self.onTyping(message.name);
-					} else {
-  					// Got a typing event when user is already typing,
-  					// cancel the scheduled handler for typing stopping.
-						clearTimeout(self.users[message.name]);
-					}
-					// Schedule the handler for typing stopping.
-					self.users[message.name] = setTimeout(function() {
-						delete self.users[message.name];
-						self.onTypingStop(message.name);
-					}, self.typingTimeout);
-					break;
-			};
-		});
-    self.fb.push({type: 'join', name: self.name});
-	};
+  self.connect = function() {
 
-  self.onMessage = function(name, text) {
-    console.log(name + ': ' + text);
+    var fb = new Firebase('https://dpe-polychat.firebaseio.com/');
+    var users = fb.child('users');
+
+    self.user = users.child(self.name);
+    self.user.set(false);
+    self.user.onDisconnect().remove();
+    users.on('value', function(snapshot) {
+      self.onUsers(snapshot.val());
+    });
+
+    self.messages = fb.child('messages');
+    self.messages.limitToLast(4).on('child_added', function(snapshot) {
+      self.onMessage(snapshot.val());
+    });
+
   };
 
-  self.onJoin = function(name) {
-    self.onMessage(name, ' joined');
+  self.onUsers = function(users) {
+    console.log(users);
   };
 
-	self.onTyping = function(name) {
-		self.onMessage(name, 'is typing');
-	};
+  self.onMessage = function(message) {
+    console.log(message.name + ': ' + message.text);
+  };
 
-	self.onTypingStop = function(name) {
-		self.onMessage(name, 'stopped typing');
-	};
+  self.send = function(text) {
+    if (self.messages != null) {
+      self.messages.push({type: 'message', name: self.name, text: text});
+    }
+  };
 
-	self.send = function(text) {
-		if (self.fb != null) {
-			self.fb.push({type: 'message', name: self.name, text: text});
-		}
-	};
-
-	self.typing = function() {
-		var now = new Date();
-		if (self.fb != null && (now - self.lastKeyPress) > 1000 ) {
-			self.lastKeyPress = now;
-			self.fb.push({type: 'typing', name: self.name});
-		}
-	};
+  self.typing = function() {
+    if (self.user != null) {
+      if (self.typingInterval == null) {
+        self.user.set(true);
+      } else {
+        clearTimeout(self.typingInterval);
+      }
+      self.typingInterval = setTimeout(function() {
+        self.typingInterval = null;
+        self.user.set(false);
+      }, 3000);
+    }
+  };
 
 };

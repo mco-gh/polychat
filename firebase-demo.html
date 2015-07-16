@@ -4,24 +4,44 @@
     <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
     <script src='js/polychat-firebase.js'></script>
+    <style>
+      #messages {float: left;}
+      #users {float: right;}
+      #input {position:absolute; bottom:20px; left: 20px;}
+    </style>
   </head>
   <body>
-    <div id='messagesDiv'></div>
-    <input type='text' id='messageInput' placeholder='Message'>
+    <div id="messages"></div>
+    <div id="users"></div>
+    <input type="text" id="input" placeholder="Message">
     <script>
 
       var polychat = new Polychat();
       polychat.name = prompt('Enter your name');
-      polychat.onMessage = function(name, text) {
-        $('<div/>').text(text).prepend($('<em/>').text(name + ': ')).appendTo($('#messagesDiv'));
-        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
+      polychat.onMessage = function(message) {
+        var messages = $('#messages');
+        $('<div/>').text(message.text).prepend($('<em/>').text(message.name + ': ')).appendTo(messages);
+        messages[0].scrollTop = messages[0].scrollHeight;
       };
+
+      polychat.onUsers = function(users) {
+        var output = '';
+        for (var name in users) {
+          output += '<li>' + name;
+          if (users[name]) {
+            output += ' (typing)';
+          }
+          output += '</li>';
+        }
+        $('#users').html('<ul>' + output + '</ul>');
+      };
+
       polychat.connect();
 
-      $('#messageInput').keypress(function (e) {
+      $('#input').keypress(function (e) {
         if (e.keyCode == 13) {
-          polychat.send($('#messageInput').val());
-          $('#messageInput').val('');
+          polychat.send($('#input').val());
+          $('#input').val('').focus();
         } else {
           polychat.typing();
         }
