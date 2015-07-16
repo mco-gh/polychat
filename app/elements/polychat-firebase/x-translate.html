@@ -43,8 +43,7 @@
       this.$.ajax.params = {
         "key": "AIzaSyD2v3leIBQnYA3yJQW4HHAqpT7tFd3tkE4",
         "q": this.query,
-        "source": "en",
-        "target": "ja"
+        "target": this.target || "ja"
       };
       this.$.ajax.generateRequest();
     },
