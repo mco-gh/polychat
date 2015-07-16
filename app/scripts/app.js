@@ -30,9 +30,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     document.getElementById('#handle').validate();
   }
 
+  var randomCat = function() {
+      var cats = ['tabby', 'bengal', 'persian', 'mainecoon', 'ragdoll', 'sphynx', 'siamese', 'korat', 'japanesebobtail', 'abyssinian', 'scottishfold'];
+      return cats[(Math.random() * cats.length) >>> 0];
+  };
+
+  var randomColor = function() {
+      var colors = ['navy', 'slate', 'olive', 'moss', 'chocolate', 'buttercup', 'maroon', 'cerise', 'plum', 'orchid'];
+      return colors[(Math.random() * colors.length) >>> 0];
+  };
+
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {
-
     // imports are loaded and elements have been registered
     var settings = document.querySelector('#dialog');
     var settingsOK = document.querySelector('#settingsOK');
@@ -43,26 +52,76 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     var sendMessageButton = document.querySelector('#sendButton');
     var chatInput = document.querySelector('#input');
     var userHandle = document.querySelector('#handle');
+    var content = document.querySelector('#primaryContent');
+
+    var avatar = 'images/' + randomCat() + '.jpg';
+    var color = randomColor();
 
     sendMessageButton.addEventListener('click', function(){
-      // TODO: Figure out where we'll pull the user avatar from
-      msgList.addMessage({
-        message: chatInput.value,
-        author: userHandle.value,
-        avatar: 'TODO'
-      });
-
-      // Clear the message input field
+      polychat.send(chatInput.value);
       chatInput.value = '';
+      chatInput.focus();
     });
 
     settingsOK.addEventListener('click', function() {
       userHandle.validate();
+      polychat.name = userHandle.value;
+      console.log('Polychat username:', polychat.name);
+      polychat.connect();
     });
 
     settingsCog.addEventListener('click', function() {
       settings.open();
     });
+
+    // Firebase integration
+    var polychat = new Polychat();
+    polychat.name = userHandle.value;
+
+    polychat.onMessage = function(name, text) {
+      //$('<div/>').text(text).prepend($('<em/>').text(name + ': ')).appendTo(messages);
+      //messages[0].scrollTop = messages[0].scrollHeight;
+      msgList.addMessage({
+        message: text,
+        author: name,
+        avatar: 'images/' + randomCat() + '.jpg'
+      });
+
+      primaryContent.parentElement.scrollTop = primaryContent.scrollHeight + 200;
+    };
+
+      // polychat.onUsers = function(users) {
+      //   var output = '';
+      //   for (var name in users) {
+      //     output += '<li>' + name;
+      //     if (users[name]) {
+      //       output += ' (typing)';
+      //     }
+      //     output += '</li>';
+      //   }
+      //   $('#users').html('<ul>' + output + '</ul>');
+      // };
+
+      chatInput.addEventListener('keypress', function(e) {
+        var enter = e.keyCode == 13;
+        if (enter) {
+          polychat.send(chatInput.value);
+          chatInput.value = '';
+          chatInput.focus();
+        }
+        polychat.typing(!enter);
+      });
+
+      // $('#input').keypress(function (e) {
+      //   var enter = e.keyCode == 13;
+      //   if (enter) {
+      //     polychat.send($('#input').val());
+      //     $('#input').val('').focus();
+      //   }
+      //   polychat.typing(!enter);
+      // });
+
+    //
 
   });
 

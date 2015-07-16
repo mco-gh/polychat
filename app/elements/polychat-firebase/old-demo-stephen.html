@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+  <head>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+    <script src='polychat-firebase.js'></script>
+    <style>
+      #messages {float: left;}
+      #users {float: right;}
+      #input {position:absolute; bottom:20px; left: 20px;}
+    </style>
+  </head>
+  <body>
+    <div id="messages"></div>
+    <div id="users"></div>
+    <input type="text" id="input" placeholder="Message">
+    <script>
+
+      var polychat = new Polychat();
+      polychat.name = prompt('Enter your name');
+      polychat.onMessage = function(name, text) {
+        var messages = $('#messages');
+        $('<div/>').text(text).prepend($('<em/>').text(name + ': ')).appendTo(messages);
+        messages[0].scrollTop = messages[0].scrollHeight;
+      };
+
+      polychat.onUsers = function(users) {
+        var output = '';
+        for (var name in users) {
+          output += '<li>' + name;
+          if (users[name]) {
+            output += ' (typing)';
+          }
+          output += '</li>';
+        }
+        $('#users').html('<ul>' + output + '</ul>');
+      };
+
+      polychat.connect();
+
+      $('#input').keypress(function (e) {
+        var enter = e.keyCode == 13;
+        if (enter) {
+          polychat.send($('#input').val());
+          $('#input').val('').focus();
+        }
+        polychat.typing(!enter);
+      });
+
+    </script>
+  </body>
+</html>

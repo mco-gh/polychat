@@ -30,11 +30,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   </style>
   <template>
       <template is="dom-repeat" items="{{messages}}">
-        <paper-material class="card" elevation="1">
-          <img class="avatar" src="http://1.gravatar.com/avatar/767fc9c115a1b989744c755db47feb60?s=200&r=pg&d=mm">
+        <div class="card">
+          <img class="avatar" src$="{{item.avatar}}">
           <strong><span>{{item.author}}</span></strong>
           <p><span>{{item.message}}</span></p>
-        </paper-material>
+        </div>
       </template>
   </template>
   <script>
@@ -48,11 +48,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         },
         ready: function() {
-          this.messages = [{
-            message: 'Hey DPE team',
-            author: 'Mr Smith',
-            avatar: 'TODO'
-          }];
+          this.messages = [];
         },
         /*
         {

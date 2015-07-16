@@ -53,6 +53,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <!-- will be replaced with elements/elements.vulcanized.html -->
   <link rel="import" href="elements/elements.html">
   <!-- endreplace-->
+
+
+
 </head>
 
 <body unresolved class="fullbleed layout vertical">
@@ -79,11 +82,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="info"></iron-icon>
             <span>Rooms</span>
           </a>
-
-<!--           <a data-route="contact" href="/contact">
-            <iron-icon icon="mail"></iron-icon>
-            <span>Contact</span>
-          </a> -->
         </paper-menu>
       </paper-scroll-header-panel>
 
@@ -112,9 +110,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </paper-toolbar>
 
         <!-- Main Content -->
-        <div class="content">
+        <div id="primaryContent" class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
             <section data-route="home">
             <chat-message-list id="chatMessageList"></chat-message-list>
             </section>
@@ -198,6 +195,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </paper-dialog>
 
   </template>
+
+  <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+  <script src="elements/polychat-firebase/polychat-firebase.js"></script>
 
   <!-- build:js scripts/app.js -->
   <script src="scripts/app.js"></script>
