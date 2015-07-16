@@ -27,14 +27,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       background: white;
       margin: 5px;
     }
+
+    .original {
+      color: #ccc;
+    }
   </style>
   <template>
       <template is="dom-repeat" items="{{messages}}">
         <div class="card">
           <img class="avatar" src$="{{item.avatar}}">
           <strong><span>{{item.author}}</span></strong>
-          <p><span>{{item.message}}</span></p>
           <x-translate query="{{item.message}}"></x-translate>
+          <p class="original"><span>{{item.message}}</span></p>
         </div>
       </template>
   </template>
