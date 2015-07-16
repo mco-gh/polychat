@@ -18,9 +18,9 @@
 
       var polychat = new Polychat();
       polychat.name = prompt('Enter your name');
-      polychat.onMessage = function(message) {
+      polychat.onMessage = function(name, text) {
         var messages = $('#messages');
-        $('<div/>').text(message.text).prepend($('<em/>').text(message.name + ': ')).appendTo(messages);
+        $('<div/>').text(text).prepend($('<em/>').text(name + ': ')).appendTo(messages);
         messages[0].scrollTop = messages[0].scrollHeight;
       };
 
