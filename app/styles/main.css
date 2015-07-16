@@ -31,10 +31,3 @@ paper-input {
     padding-right: 10px;
 }
 
-.avatar {
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    background: #9e9e9e url() center center no-repeat;
-    background-size: contain;
-}

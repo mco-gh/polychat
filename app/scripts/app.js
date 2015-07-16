@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // and give it some initial binding values
   // Learn more about auto-binding templates at http://goo.gl/Dx1u2g
   var app = document.querySelector('#app');
+  var chatMessageQueue = [];
 
   app.displayInstalledToast = function() {
     document.querySelector('#caching-complete').show();
@@ -25,11 +26,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     console.log('Our app is ready to rock!');
   });
 
+  function validate() {
+    document.getElementById('#handle').validate();
+  }
+
   // See https://github.com/Polymer/polymer/issues/1381
   window.addEventListener('WebComponentsReady', function() {
+
     // imports are loaded and elements have been registered
     var settings = document.querySelector('#dialog');
+    var settingsOK = document.querySelector('#settingsOK');
+    var settingsCog = document.querySelector('#settingsCog');
     settings.open();
+
+    var msgList = document.querySelector('#chatMessageList');
+    var sendMessageButton = document.querySelector('#sendButton');
+    var chatInput = document.querySelector('#input');
+    var userHandle = document.querySelector('#handle');
+
+    sendMessageButton.addEventListener('click', function(){
+      // TODO: Figure out where we'll pull the user avatar from
+      msgList.addMessage({
+        message: chatInput.value,
+        author: userHandle.value,
+        avatar: 'TODO'
+      });
+
+      // Clear the message input field
+      chatInput.value = '';
+    });
+
+    settingsOK.addEventListener('click', function() {
+      userHandle.validate();
+    });
+
+    settingsCog.addEventListener('click', function() {
+      settings.open();
+    });
+
   });
 
   // Main area's paper-scroll-header-panel custom condensing transformation of

@@ -96,7 +96,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <span class="flex"></span>
 
           <!-- Toolbar icons -->
-          <paper-icon-button icon="settings"></paper-icon-button>
+          <paper-icon-button icon="settings" id="settingsCog"></paper-icon-button>
           <paper-icon-button icon="add"></paper-icon-button>
 
           <!-- Application name -->
@@ -116,31 +116,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
-
-              <paper-material elevation="1">
-                <img class="avatar" src="http://1.gravatar.com/avatar/767fc9c115a1b989744c755db47feb60?s=200&r=pg&d=mm">
-                <strong>John Smith</strong>
-                <p>This is a chat message</p>
-              </paper-material>
-
-              <paper-material elevation="1">
-                <img class="avatar" src="http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50">
-                <strong>Buddy Holly</strong>
-                <p>This is a chat message</p>
-              </paper-material>
-
-              <paper-material elevation="1">
-                <img class="avatar" src="http://1.gravatar.com/avatar/767fc9c115a1b989744c755db47feb60?s=200&r=pg&d=mm">
-                <strong>John Smith</strong>
-                <p>This is a chat message</p>
-              </paper-material>
-
-              <paper-material elevation="1">
-                <img class="avatar" src="http://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50">
-                <strong>Buddy Holly</strong>
-                <p>This is a chat message</p>
-              </paper-material>
-
+            <chat-message-list id="chatMessageList"></chat-message-list>
             </section>
 
             <section data-route="rooms">
@@ -173,15 +149,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-scroll-header-panel>
     </paper-drawer-panel>
 
-
-         <div class="send-message">
-          <span class=" layout horizontal">
-            <paper-input class="flex" label="Type message..." id="input"></paper-input>
-            <paper-fab class="send" icon="send" id="sendButton"></paper-fab>
-          </span>
-        </div>
-
-
+     <div class="send-message">
+      <span class=" layout horizontal">
+        <paper-input class="flex" label="Type message..." id="input"></paper-input>
+        <paper-fab class="send" icon="send" id="sendButton"></paper-fab>
+      </span>
+    </div>
 
     <!-- Uncomment next block to enable Service Worker support (1/2) -->
     <!--
@@ -200,9 +173,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </platinum-sw-register>
     -->
 
-    <paper-dialog id="dialog" style="width: 400px; height: 250px" modal>
+    <paper-dialog id="dialog" style="width: 400px; height: 300px">
       <h2>Settings</h2>
-      <p>Please configure your Translation settings below.</p>
+      <p>Please enter your chat details below.</p>
+
+      <!-- Chat name -->
+      <paper-input label="handle" id="handle" required label="only type letters (no auto validate)" pattern="[a-zA-Z]*" error-message="letters only, required input!"></paper-input>
+
       <!-- Language -->
       <label for="select_language">Language:</label>
       <select name="select_language" id="select_language">
@@ -216,7 +193,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <paper-toggle-button></paper-toggle-button>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm autofocus>OK</paper-button>
+        <paper-button id="settingsOK" dialog-confirm autofocus>OK</paper-button>
       </div>
     </paper-dialog>
 
