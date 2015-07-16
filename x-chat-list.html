@@ -7,6 +7,7 @@ A single user list with a username, avatar, and desc.
   <x-chat-list avatar="url" username="name" message="hello" status="online" timestamp="1420145273945"></x-chat-list>
 -->
 <link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="x-translate.html">
 <script src="bower_components/time-elements/time-elements.js"></script>
 <dom-module id='x-chat-list'>
     <style>
@@ -111,12 +112,13 @@ A single user list with a username, avatar, and desc.
     </style>
     <template>
         <section class="user-list layout horizontal">
-            <div class="avatar {{color}}" style="background-image: url({{avatar}})">
+            <div id="avatar" class="avatar {{color}}">
                 <div class="status {{status}}"></div>
             </div>
             <div class="flex">
                 <div class="username">{{username}}</div>
                 <div class="text">{{text}}</div>
+                <div class="text"><x-translate query="{{text}}"></x-translate></div>
             </div>
             <time class="timestamp relative-time" is=datetime="{{timestamp}}"></time>
         </section>
@@ -149,6 +151,9 @@ A single user list with a username, avatar, and desc.
             type: 'String',
             value: new Date().toISOString()
           }
+        },
+        ready: function () {
+          this.$.avatar.style.backgroundImage = 'url(' + this.avatar + ')';
         }
     });
     </script>
