@@ -39,12 +39,12 @@
       polychat.connect();
 
       $('#input').keypress(function (e) {
-        if (e.keyCode == 13) {
+        var enter = e.keyCode == 13;
+        if (enter) {
           polychat.send($('#input').val());
           $('#input').val('').focus();
-        } else {
-          polychat.typing();
         }
+        polychat.typing(!enter);
       });
 
     </script>

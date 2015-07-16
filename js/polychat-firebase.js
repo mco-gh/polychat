@@ -76,17 +76,23 @@ var Polychat = function() {
     }
   };
 
-  self.typing = function() {
+  self.typing = function(typing) {
+    var clear = function() {
+      self.typingInterval = null;
+      self.user.set(false);
+    };
     if (self.user != null) {
-      if (self.typingInterval == null) {
-        self.user.set(true);
-      } else {
+      if (self.typingInterval != null) {
         clearTimeout(self.typingInterval);
       }
-      self.typingInterval = setTimeout(function() {
-        self.typingInterval = null;
-        self.user.set(false);
-      }, 3000);
+      if (typing) {
+        if (self.typingInterval == null) {
+          self.user.set(true);
+        }
+        self.typingInterval = setTimeout(clear, 3000);
+      } else {
+        clear();
+      }
     }
   };
 
