@@ -6,6 +6,7 @@ var Polychat = function() {
   self.user = null;
   self.messages = null;
   self.typingInterval = null;
+  self.language = 'en';
 
   self.connect = function() {
 
@@ -51,7 +52,7 @@ var Polychat = function() {
     self.messages = fb.child('messages');
     self.messages.limitToLast(5).on('child_added', function(snapshot) {
       var message = snapshot.val();
-      self.onMessage(message.name, message.text);
+      self.onMessage(message.name, message.text, message.language || 'en');
     });
 
   };
@@ -72,13 +73,18 @@ var Polychat = function() {
     self.onMessage(name, typing ? 'is typing' : 'stopped typing');
   };
 
-  self.onMessage = function(name, text) {
-    console.log(name + ': ' + text);
+  self.onMessage = function(name, text, language) {
+    console.log(name + ': ' + text + ' [' + language + ']');
   };
 
   self.send = function(text) {
     if (self.messages != null) {
-      self.messages.push({type: 'message', name: self.name, text: text});
+      self.messages.push({
+        type: 'message',
+        name: self.name,
+        text: text,
+        language: self.language
+      });
     }
   };
 

@@ -1,0 +1,57 @@
+<dom-module id="x-languages">
+<style>
+:host {
+  display: inline;
+}
+.detected-language {
+  color: gray;
+  border: 1px solid gray;
+  font-size: 10pt;
+  padding: 3px;
+}
+</style>
+<template>
+  <iron-ajax id="ajax"
+  url="https://www.googleapis.com/language/translate/v2/languages"
+  handle-as="json"
+  on-response="handleResponse"></iron-ajax>
+  <select id="languages">
+    <template is="dom-repeat" items="{{languages}}" as="language">
+      <option value="{{language.language}}">{{language.name}}</option>
+    </template>
+  </select>
+</template>
+</dom-module>
+<script>
+(function () {
+  Polymer({
+    is: 'x-languages',
+    properties: {
+      target: {
+        type: String,
+        value: (navigator.browserLanguage || navigator.language ||
+          navigator.userLanguage).substr(0,2) || 'en',
+        notify: true
+      }
+    },
+    ready: function () {
+      this.$.ajax.params = {
+        "key": "AIzaSyCvmuME4nuAt6dsYwM6SKSvpYyn3a_DcnU",
+        "target": this.target
+      };
+      this.$.ajax.generateRequest();
+      var element = this.$.languages;
+      // element.addEventListener('change', function () {
+      //   // console.log(element.options[element.selectedIndex].value);
+      //   // this.fire('language-change', {
+      //   //   language: element.options[element.selectedIndex].value
+      //   // });
+      // }.bind(this));
+    },
+    handleResponse: function (request) {
+      this.languages =  request.detail.response.data.languages;
+    }
+  }
+);
+})();
+</script>

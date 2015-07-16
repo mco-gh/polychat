@@ -56,6 +56,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     var avatar = 'images/' + randomCat() + '.jpg';
     var color = randomColor();
+    var userList = document.querySelector('#users');
+    var translator = document.querySelector('#translator');
+    var languages = document.querySelector('#languages');
 
     sendMessageButton.addEventListener('click', function(){
       polychat.send(chatInput.value);
@@ -81,6 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     polychat.onMessage = function(name, text) {
       //$('<div/>').text(text).prepend($('<em/>').text(name + ': ')).appendTo(messages);
       //messages[0].scrollTop = messages[0].scrollHeight;
+
       msgList.addMessage({
         message: text,
         author: name,
@@ -88,19 +92,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       });
 
       primaryContent.parentElement.scrollTop = primaryContent.scrollHeight + 200;
+
     };
 
-      // polychat.onUsers = function(users) {
-      //   var output = '';
-      //   for (var name in users) {
-      //     output += '<li>' + name;
-      //     if (users[name]) {
-      //       output += ' (typing)';
-      //     }
-      //     output += '</li>';
-      //   }
-      //   $('#users').html('<ul>' + output + '</ul>');
-      // };
+      polychat.onUsers = function(users) {
+        var output = '';
+        for (var name in users) {
+          output += '<li>' + name;
+          if (users[name]) {
+            output += ' (typing)';
+          }
+          output += '</li>';
+        }
+
+        userList.innerHTML = '<ul>' + output + '</ul>';
+      };
 
       chatInput.addEventListener('keypress', function(e) {
         var enter = e.keyCode == 13;

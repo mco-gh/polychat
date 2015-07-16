@@ -181,6 +181,7 @@ gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 gulp.task('serve', ['styles', 'elements', 'images'], function () {
   browserSync({
     notify: false,
+    port: 8000,
     logPrefix: 'PSK',
     snippetOptions: {
       rule: {

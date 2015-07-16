@@ -62,6 +62,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <span id="browser-sync-binding"></span>
   <template is="dom-bind" id="app">
 
+
     <paper-drawer-panel id="paperDrawerPanel">
       <!-- Drawer Scroll Header Panel -->
       <paper-scroll-header-panel drawer fixed>
@@ -83,6 +84,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Rooms</span>
           </a>
         </paper-menu>
+
+        <span class="paper-font-title" style="padding:20px;">Users</span>
+
+        <div id="users">
+        </div>
       </paper-scroll-header-panel>
 
       <!-- Main Area -->
@@ -122,6 +128,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <p>This is the rooms section</p>
                 <a href="/rooms/DPEs">DPEs</a>
                 <a href="/rooms/DAs">DAs</a>
+
               </paper-material>
             </section>
 
@@ -179,11 +186,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <!-- Language -->
       <label for="select_language">Language:</label>
-      <select name="select_language" id="select_language">
+      <x-languages id="languages"></x-languages>
+<!--       <select name="select_language" id="select_language">
           <option>English</option>
           <option>Japanese</option>
           <option>French</option>
-      </select>
+      </select> -->
       <br>
       <!-- Toggle -->
       <label for="select_persist">History on/off:</label>
@@ -193,7 +201,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <paper-button id="settingsOK" dialog-confirm autofocus>OK</paper-button>
       </div>
     </paper-dialog>
-
   </template>
 
   <script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>

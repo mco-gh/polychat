@@ -1,0 +1,60 @@
+<dom-module id="x-translate">
+<style>
+:host {
+  display: inline;
+}
+.detected-language {
+  color: gray;
+  border: 1px solid gray;
+  font-size: 10pt;
+  padding: 3px;
+}
+</style>
+<template>
+  <iron-ajax id="ajax"
+  url="https://www.googleapis.com/language/translate/v2"
+  handle-as="json"
+  on-response="handleResponse"></iron-ajax>
+  <span>
+    <span class="detected-language">[[detectedLanguage]]</span>
+    <span class="translated-text">[[translatedText]]</span>
+  </span>
+</template>
+</dom-module>
+<script>
+(function () {
+  Polymer({
+    is: 'x-translate',
+    properties: {
+      query: {
+        type: String,
+        value: '',
+        notify: true,
+        observer: 'queryChanged'
+      },
+      target: {
+        type: String,
+        value: (navigator.browserLanguage || navigator.language ||
+          navigator.userLanguage).substr(0,2) || 'en',
+        notify: true
+      }
+    },
+    queryChanged: function () {
+      this.$.ajax.params = {
+        "key": "AIzaSyD2v3leIBQnYA3yJQW4HHAqpT7tFd3tkE4",
+        "q": this.query,
+        "source": "en",
+        "target": "ja"
+      };
+      this.$.ajax.generateRequest();
+    },
+    handleResponse: function (request) {
+      var result =  request.detail.response.data.translations[0];
+      this.detectedLanguage = result.detectedSourceLanguage;
+      this.translatedText = result.translatedText;
+      this.fire('translation', {text: result.translatedText});
+    }
+  }
+);
+})();
+</script>
