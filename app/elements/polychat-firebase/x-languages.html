@@ -41,12 +41,10 @@
       };
       this.$.ajax.generateRequest();
       var element = this.$.languages;
-      // element.addEventListener('change', function () {
-      //   // console.log(element.options[element.selectedIndex].value);
-      //   // this.fire('language-change', {
-      //   //   language: element.options[element.selectedIndex].value
-      //   // });
-      // }.bind(this));
+      element.addEventListener('change', function () {
+        console.log(element.options[element.selectedIndex].value);
+        window.customLang = element.options[element.selectedIndex].value;
+      }.bind(this));
     },
     handleResponse: function (request) {
       this.languages =  request.detail.response.data.languages;
