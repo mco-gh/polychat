@@ -11,6 +11,11 @@
     </style>
   </head>
   <body>
+    <select id="languages">
+      <option value="en">English</option>
+      <option value="ja">Japanese</option>
+      <option value="fa">Persian</option>
+    </select>
     <div id="messages"></div>
     <div id="users"></div>
     <input type="text" id="input" placeholder="Message">
@@ -18,13 +23,27 @@
 
       var polychat = new Polychat();
       polychat.name = prompt('Enter your name');
+      polychat.language = 'en';
+
+      var languages = $('#languages');
+
+      languages.change(function() {
+        polychat.language = languages.val();
+      });
+
+      var displayMessage = function(name, text) {
+        $('<div/>').text(text).prepend($('<em/>').text(name + ': ')).appendTo($('#messages'));
+      };
+
       polychat.onMessage = function(name, text, language) {
-        var messages = $('#messages');
-        if (language) {
-          text += ' [' + language + ']';
+        if (language != polychat.language) {
+          $.get('https://www.googleapis.com/language/translate/v2?key=AIzaSyCvmuME4nuAt6dsYwM6SKSvpYyn3a_DcnU&source='
+            + language + '&target=' + polychat.language + '&q=' + text, function(response) {
+              displayMessage(name, response.data.translations[0].translatedText);
+          });
+        } else {
+          displayMessage(name, text);
         }
-        $('<div/>').text(text).prepend($('<em/>').text(name + ': ')).appendTo(messages);
-        messages[0].scrollTop = messages[0].scrollHeight;
       };
 
       polychat.onUsers = function(users) {
@@ -51,5 +70,6 @@
       });
 
     </script>
-  </body>
+
+</body>
 </html>
