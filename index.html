@@ -26,6 +26,7 @@
 
     <link rel="import" href="x-chat-list.html">
     <link rel="import" href="x-translate.html">
+    <link rel="import" href="x-languages.html">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <!-- <body unresolved fullbleed> -->
@@ -59,6 +60,9 @@
                 <iron-icon icon="account-circle"></iron-icon><span>{{occupancy}}</span>
                 <x-translate query="le chat"></x-translate>
             </div>
+            <section class="layout vertical flex">
+              <x-languages id="languages"></x-languages>
+            </section
             <section class="layout vertical fit" id="chat">
                 <div class="chat-list flex">
                     <template is="dom-repeat" items="{{messageList}}">
